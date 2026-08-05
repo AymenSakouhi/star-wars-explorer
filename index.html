@@ -8,6 +8,24 @@
       content="Browse the Star Wars API: people, planets, films, species, vehicles, and starships."
     />
     <title>SWAPI Explorer</title>
+    <script>
+      // Applies the stored theme before first paint, so the page never flashes
+      // the wrong one. Mirrors readInitialTheme() in src/hooks/use-theme.tsx.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('swapi-theme')
+          var theme =
+            stored === 'light' || stored === 'dark'
+              ? stored
+              : window.matchMedia('(prefers-color-scheme: light)').matches
+                ? 'light'
+                : 'dark'
+          if (theme === 'dark') document.documentElement.classList.add('dark')
+        } catch (error) {
+          document.documentElement.classList.add('dark')
+        }
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

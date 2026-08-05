@@ -3,6 +3,7 @@ import { render, type RenderOptions } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryRouter, RouterProvider } from 'react-router-dom'
+import { ThemeProvider } from '@/app/theme-provider'
 
 /**
  * Retries off, so a test asserting an error state resolves immediately instead
@@ -34,9 +35,11 @@ export function renderWithProviders(ui: ReactElement, options: Options = {}) {
     client,
     router,
     ...render(
-      <QueryClientProvider client={client}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>,
+      <ThemeProvider>
+        <QueryClientProvider client={client}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </ThemeProvider>,
       renderOptions,
     ),
   }
