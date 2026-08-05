@@ -1,7 +1,5 @@
 import type { UseQueryResult } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { SwapiError } from '@/lib/swapi/client'
 
@@ -31,11 +29,11 @@ export function QueryBoundary<T>({
   if (query.isPending) {
     return (
       <div role="status" aria-busy="true" aria-live="polite">
-        <span className="sr-only">Loading</span>
+        <span className="sr-only">Loading records</span>
         {skeleton ?? (
           <div className="grid gap-3">
-            <Skeleton className="h-8 w-1/3" />
-            <Skeleton className="h-24 w-full" />
+            <Skeleton className="h-8 w-1/3 rounded-none" />
+            <Skeleton className="h-24 w-full rounded-none" />
           </div>
         )}
       </div>
@@ -47,32 +45,34 @@ export function QueryBoundary<T>({
     const isSwapi = error instanceof SwapiError
 
     return (
-      <Alert variant="destructive" role="alert">
-        <AlertTitle>Could not load that</AlertTitle>
-        <AlertDescription className="grid gap-3">
-          <span>{isSwapi ? error.message : 'An unexpected error occurred.'}</span>
+      <div role="alert" className="border-destructive/40 grid gap-3 border border-dashed p-6">
+        <p className="readout text-destructive">Retrieval failed</p>
+        <p className="text-sm">
+          {isSwapi ? error.message : 'Something went wrong reading the archive.'}
+        </p>
 
-          {/* Hidden when retrying provably cannot help: a parse failure returns
-              the same bad shape, and a 404 stays a 404. Offering the button
-              anyway would just teach the user it does nothing. */}
-          {(!isSwapi || error.isRetryable) && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-fit"
-              onClick={() => void query.refetch()}
-            >
-              Try again
-            </Button>
-          )}
-        </AlertDescription>
-      </Alert>
+        {/* Hidden when retrying provably cannot help: a parse failure returns
+            the same bad shape, and a 404 stays a 404. Offering the button
+            anyway would just teach the user it does nothing. */}
+        {(!isSwapi || error.isRetryable) && (
+          <button
+            type="button"
+            className="border-hairline hover:border-archive hover:text-archive readout mt-1 w-fit border px-3 py-2 transition-colors"
+            onClick={() => void query.refetch()}
+          >
+            Try again
+          </button>
+        )}
+      </div>
     )
   }
 
   if (isEmpty) {
     return (
-      <p className="text-muted-foreground py-12 text-center" role="status">
+      <p
+        role="status"
+        className="text-muted-foreground border-hairline border border-dashed p-10 text-center text-sm"
+      >
         {emptyMessage}
       </p>
     )

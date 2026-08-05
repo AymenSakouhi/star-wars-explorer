@@ -43,7 +43,7 @@ export function SearchInput({ value, placeholder, onChange }: Props) {
       />
       <Input
         type="search"
-        className="pl-9"
+        className="border-hairline focus-visible:border-archive focus-visible:ring-archive/30 h-11 rounded-none pl-9 text-sm"
         value={draft}
         placeholder={placeholder}
         aria-label={placeholder}

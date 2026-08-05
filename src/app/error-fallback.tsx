@@ -1,5 +1,4 @@
 import { isRouteErrorResponse, useRouteError } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
 
 /**
  * Last line of defence: a render-time crash or an unhandled router error. Data
@@ -12,21 +11,23 @@ export function ErrorFallback() {
     ? `${String(error.status)} ${error.statusText}`
     : error instanceof Error
       ? error.message
-      : 'Something went wrong.'
+      : 'The archive terminal stopped responding.'
 
   return (
-    <main className="mx-auto grid min-h-screen max-w-md place-items-center gap-4 p-6 text-center">
-      <div>
-        <h1 className="text-swapi text-2xl font-bold">A disturbance in the Force</h1>
-        <p className="text-muted-foreground mt-2 text-sm">{message}</p>
-        <Button
-          className="mt-6"
+    <main className="bg-background text-foreground min-h-screen">
+      <div className="mx-auto grid max-w-2xl gap-4 px-5 py-24">
+        <p className="readout text-destructive">Terminal fault</p>
+        <h1 className="record-title text-4xl leading-none">Something broke</h1>
+        <p className="text-muted-foreground text-sm">{message}</p>
+        <button
+          type="button"
+          className="border-hairline hover:border-archive hover:text-archive readout mt-2 w-fit border px-4 py-2.5 transition-colors"
           onClick={() => {
             window.location.assign('/')
           }}
         >
-          Return to safety
-        </Button>
+          Reload the index
+        </button>
       </div>
     </main>
   )

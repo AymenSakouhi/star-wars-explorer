@@ -18,10 +18,10 @@ export function ResourceListPage() {
   const { resource } = useParams()
 
   if (resource === undefined || !isResourceKey(resource)) {
-    return <NotFoundPage message="No such archive." />
+    return <NotFoundPage message="That archive section does not exist." />
   }
 
-  // Keyed so switching resources remounts rather than briefly rendering one
+  // Keyed so switching sections remounts rather than briefly rendering one
   // resource's data through another's field configuration.
   return <ResourceList key={resource} resource={resource} />
 }
@@ -41,26 +41,32 @@ function ResourceList({ resource }: { resource: ResourceKey }) {
   const label = config.label.toLowerCase()
 
   return (
-    <div className="grid gap-6">
-      <header className="grid gap-2">
-        <h1 className="text-swapi text-2xl font-bold tracking-tight">{config.label}</h1>
-        <p className="text-muted-foreground text-sm">{config.blurb}</p>
+    <div className="grid gap-8">
+      <header className="border-hairline grid gap-3 border-b pb-6">
+        <p className="readout">Archive section</p>
+        <h1 className="record-title text-4xl leading-none">{config.label}</h1>
+        <p className="text-muted-foreground max-w-prose text-sm">{config.blurb}</p>
       </header>
 
-      <SearchInput value={search} placeholder={config.searchHint} onChange={setSearch} />
-
-      <p className="text-muted-foreground text-sm" aria-live="polite">
-        {query.data ? `${String(query.data.count)} results` : ' '}
-      </p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="flex-1">
+          <SearchInput value={search} placeholder={config.searchHint} onChange={setSearch} />
+        </div>
+        <p className="readout sm:text-right" aria-live="polite">
+          {query.data ? `${String(query.data.count)} records` : ' '}
+        </p>
+      </div>
 
       <QueryBoundary
         query={query}
         isEmpty={query.data?.results.length === 0}
-        emptyMessage={search ? `No ${label} match “${search}”.` : `No ${label} on record.`}
+        emptyMessage={
+          search ? `No ${label} match “${search}”. Try a shorter term.` : `No ${label} on record.`
+        }
         skeleton={
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: PAGE_SIZE }, (_, index) => (
-              <Skeleton key={index} className="h-28 w-full" />
+              <Skeleton key={index} className="h-32 w-full rounded-none" />
             ))}
           </div>
         }
@@ -76,6 +82,7 @@ function ResourceList({ resource }: { resource: ResourceKey }) {
                   <li key={entity.url}>
                     <EntityCard
                       to={detailPath(resource, id)}
+                      recordId={id}
                       title={config.title(entity)}
                       fields={config.listFields.map((key) => ({
                         key,

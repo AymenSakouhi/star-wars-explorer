@@ -1,12 +1,12 @@
-# SWAPI Explorer
+# Star Wars Explorer
 
 [![CI](https://github.com/AymenSakouhi/star-wars-explorer/actions/workflows/ci.yml/badge.svg)](https://github.com/AymenSakouhi/star-wars-explorer/actions/workflows/ci.yml)
 
-A small React app for browsing the Star Wars API — all six resources, with search, pagination, and relations resolved into links, so you can follow a character to their homeworld and on to the films it appears in.
+A React app for browsing the Star Wars archives — all six SWAPI resources, with search, pagination, and every relation resolved into a link, so you can follow a character to their homeworld and on to the films it appears in.
 
 Built as a take-home assignment for JAKALA.
 
-![The people list, filtered by search](docs/screenshots/list-search.png)
+![The archive index, showing the six sections with live record counts](docs/screenshots/home.png)
 
 ## Running it
 
@@ -83,11 +83,15 @@ Pagination uses `keepPreviousData` so page changes don't replace good content wi
 
 A single `QueryBoundary` renders loading, error, empty, and success, and every screen goes through it — so no screen can handle three of the four and leave the user staring at a blank page on the fourth.
 
-![A species detail page](docs/screenshots/detail-species.png)
+### The index is also a prefetch
+
+The home page shows a live record count per section. Those are the exact queries each list page runs on arrival, so displaying them makes clicking through instant — the count is real information _and_ a warm cache, rather than decoration.
+
+![A film record, with every relation resolved into a link](docs/screenshots/detail.png)
 
 ## Testing
 
-140 tests. Vitest, Testing Library, and MSW; ~93% statement coverage.
+141 tests. Vitest, Testing Library, and MSW; ~93% statement coverage.
 
 MSW serves fixtures trimmed from **real** `swapi.py4e.com` responses, so the schemas are tested against the shape the API actually returns rather than an idealised one. Unhandled requests fail the run, so no test can silently reach the network and pass slowly in CI.
 
@@ -127,14 +131,23 @@ The brief asked for these to be recorded, so here they are in full.
 
 - Playwright smoke tests in CI, against a recorded fixture set.
 - Error-boundary coverage — the render-crash path is currently the one branch with no test.
-- Prefetch each resource's first page from the home hub, the way detail routes already prefetch on hover.
 - Client-side sorting. SWAPI offers no `ordering` parameter, so it would have to be per-page and should say so in the UI rather than pretend to sort the whole set.
+- Deep-link the search across sections — one query, six result groups.
 
 ## Design notes
 
-The brief asked for minimal design effort, so the entire visual identity is one accent colour token over shadcn's neutral defaults, in light and dark, both meeting WCAG AA against their own background. No custom illustration and no asset pipeline.
+The obvious Star Wars treatment is black, yellow, and an opening crawl. Every submission does it, and it says nothing about the app. This one takes its language from Star Wars' _in-world_ graphics instead — the readouts and briefing displays — because the app genuinely is a database of records:
 
-Accessibility was kept cheap and present: landmarks, a skip link, one `h1` per page, a labelled search input, an `aria-live` result count, and cards that are real anchors so keyboard navigation and focus order come for free.
+- **An archive terminal, not a poster.** Letterspaced monospaced labels, hairline rules, and a catalog reference on every record (`RECORD · PERSON · 001`). No starfield, no crawl, no ornament.
+- **Two accents with jobs, not moods.** Amber marks record identity — titles, the wordmark, counts. Cyan is reserved strictly for relations, so the colour itself tells you a link goes deeper into the archive.
+- **Three type roles.** Archivo for record titles, Geist for prose, JetBrains Mono for the readout layer. The mono carries the theme so nothing else has to.
+- **Blue-black surfaces**, not neutral grey, so the amber reads warm against them.
+
+Every foreground/background pairing clears WCAG AA in both themes. No custom illustration and no asset pipeline — SWAPI ships no images, and sourcing character art would mean third-party assets with unclear licensing.
+
+Accessibility was kept cheap and present: landmarks, a skip link, one `h1` per page, a labelled search input, an `aria-live` record count, `prefers-reduced-motion` respected, and cards that are real anchors so keyboard navigation and focus order come for free.
+
+A note on scope: the brief asked to keep design effort minimal, and the first version did — one accent token over shadcn defaults. This restyle was a deliberate follow-up, kept to tokens, copy, and layout rather than new machinery. It changed no data-layer code.
 
 ## Project layout
 

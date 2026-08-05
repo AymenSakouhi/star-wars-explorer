@@ -15,10 +15,14 @@ export function Pagination({ page, count, pageSize, onPageChange }: Props) {
   if (lastPage <= 1) return null
 
   return (
-    <nav aria-label="Pagination" className="flex items-center justify-center gap-4 pt-4">
+    <nav
+      aria-label="Pagination"
+      className="border-hairline flex items-center justify-between gap-4 border-t pt-5"
+    >
       <Button
         variant="outline"
         size="sm"
+        className="readout rounded-none"
         disabled={page <= 1}
         onClick={() => {
           onPageChange(page - 1)
@@ -27,13 +31,14 @@ export function Pagination({ page, count, pageSize, onPageChange }: Props) {
         Previous
       </Button>
 
-      <span className="text-muted-foreground text-sm" aria-live="polite">
+      <span className="readout" aria-live="polite">
         Page {page} of {lastPage}
       </span>
 
       <Button
         variant="outline"
         size="sm"
+        className="readout rounded-none"
         disabled={page >= lastPage}
         onClick={() => {
           onPageChange(page + 1)

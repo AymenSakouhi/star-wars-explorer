@@ -1,20 +1,21 @@
 import { Link } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
 
 export function NotFoundPage({
-  message = 'These are not the records you are looking for.',
+  message = 'That record is not in the archive.',
 }: {
   message?: string
 }) {
   return (
-    <div className="grid place-items-center gap-4 py-24 text-center">
-      <div>
-        <h1 className="text-swapi text-4xl font-bold">404</h1>
-        <p className="text-muted-foreground mt-2">{message}</p>
-        <Button asChild className="mt-6">
-          <Link to="/">Back to the archives</Link>
-        </Button>
-      </div>
+    <div className="grid gap-4 py-20">
+      <p className="readout">Error 404</p>
+      <h1 className="record-title text-5xl leading-none">Not found</h1>
+      <p className="text-muted-foreground max-w-prose">{message}</p>
+      <Link
+        to="/"
+        className="border-hairline hover:border-archive hover:text-archive readout mt-2 inline-flex w-fit items-center border px-4 py-2.5 transition-colors"
+      >
+        Back to the index
+      </Link>
     </div>
   )
 }

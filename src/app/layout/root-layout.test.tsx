@@ -17,7 +17,7 @@ describe('RootLayout', () => {
   it('exposes the resource navigation as a labelled landmark', () => {
     renderWithProviders(<RootLayout />)
 
-    const nav = screen.getByRole('navigation', { name: /resources/i })
+    const nav = screen.getByRole('navigation', { name: /archive sections/i })
     for (const key of RESOURCE_KEYS) {
       expect(nav).toHaveTextContent(RESOURCES[key].label)
     }

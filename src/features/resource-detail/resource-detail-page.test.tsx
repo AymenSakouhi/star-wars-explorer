@@ -15,10 +15,11 @@ describe('ResourceDetailPage', () => {
     ).toBeInTheDocument()
   })
 
-  it('labels the entity with its resource, in the singular', async () => {
+  it('shows a catalog reference naming the record class and number', async () => {
     renderDetail('/people/1')
     await screen.findByRole('heading', { level: 1, name: 'Luke Skywalker' })
-    expect(screen.getByText('Person')).toBeInTheDocument()
+
+    expect(screen.getByText(/Record · Person · 001/)).toBeInTheDocument()
   })
 
   it('renders the registry-configured detail fields with readable labels', async () => {
@@ -87,9 +88,9 @@ describe('ResourceDetailPage', () => {
     expect(screen.getByText(/does not exist in the archives/i)).toBeInTheDocument()
   })
 
-  it('renders the 404 page for a resource SWAPI does not have', () => {
+  it('renders the not-found page for a resource SWAPI does not have', () => {
     renderDetail('/droids/1')
-    expect(screen.getByRole('heading', { level: 1, name: '404' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: /not found/i })).toBeInTheDocument()
   })
 
   it('works for a resource whose title field is not "name"', async () => {

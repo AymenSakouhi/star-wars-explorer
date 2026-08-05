@@ -1,6 +1,5 @@
 import { useQueries } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
-import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { EM_DASH } from '@/lib/format'
 import { byUrlQuery } from '@/lib/swapi/queries'
@@ -26,19 +25,19 @@ type Props = {
  *
  * Each URL is its own query sharing a cache key with `detailQuery`, so a planet
  * already loaded elsewhere costs nothing here, and one unreachable relation
- * degrades to a single "Unavailable" chip instead of failing the whole page.
+ * degrades to a single chip instead of failing the whole page.
  */
 export function RelatedLinks({ urls, label }: Props) {
   const results = useQueries({ queries: urls.map((url) => byUrlQuery(url)) })
 
   return (
-    <section>
-      <h3 className="text-muted-foreground text-xs tracking-wide uppercase">{label}</h3>
+    <section className="grid gap-2 sm:grid-cols-[10rem_1fr] sm:gap-4">
+      <h3 className="readout sm:pt-1.5">{label}</h3>
 
       {urls.length === 0 ? (
-        <p className="mt-2 text-sm">{EM_DASH}</p>
+        <p className="text-muted-foreground text-sm">{EM_DASH}</p>
       ) : (
-        <ul className="mt-2 flex flex-wrap gap-2">
+        <ul className="flex flex-wrap gap-1.5">
           {urls.map((url, index) => {
             const result = results[index]
             const path = pathFromUrl(url)
@@ -46,7 +45,7 @@ export function RelatedLinks({ urls, label }: Props) {
             if (result === undefined || result.isPending) {
               return (
                 <li key={url}>
-                  <Skeleton className="h-6 w-24 rounded-full" />
+                  <Skeleton className="h-7 w-24 rounded-none" />
                 </li>
               )
             }
@@ -54,18 +53,23 @@ export function RelatedLinks({ urls, label }: Props) {
             if (result.isError || path === null) {
               return (
                 <li key={url}>
-                  <Badge variant="outline" className="text-muted-foreground">
+                  <span className="border-hairline text-muted-foreground inline-flex h-7 items-center border border-dashed px-2.5 text-xs">
                     Unavailable
-                  </Badge>
+                  </span>
                 </li>
               )
             }
 
             return (
               <li key={url}>
-                <Badge asChild variant="secondary" className="hover:border-swapi">
-                  <Link to={path}>{titleOf(url, result.data)}</Link>
-                </Badge>
+                {/* Cyan is reserved for relations, so the colour itself tells
+                    you this link goes deeper into the archive. */}
+                <Link
+                  to={path}
+                  className="border-holo/30 text-holo hover:border-holo hover:bg-holo/10 inline-flex h-7 items-center border px-2.5 text-xs transition-colors"
+                >
+                  {titleOf(url, result.data)}
+                </Link>
               </li>
             )
           })}

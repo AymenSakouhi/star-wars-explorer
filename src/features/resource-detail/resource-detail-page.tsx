@@ -4,7 +4,6 @@ import { Link, useParams } from 'react-router-dom'
 import { FieldList } from '@/components/field-list'
 import { QueryBoundary } from '@/components/query-boundary'
 import { RelatedLinks } from '@/components/related-links'
-import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { formatLabel } from '@/lib/format'
 import { detailQuery } from '@/lib/swapi/queries'
@@ -27,7 +26,7 @@ export function ResourceDetailPage() {
   const { resource, id } = useParams()
 
   if (resource === undefined || id === undefined || !isResourceKey(resource)) {
-    return <NotFoundPage message="No such archive." />
+    return <NotFoundPage message="That archive section does not exist." />
   }
 
   return <ResourceDetail key={`${resource}/${id}`} resource={resource} id={id} />
@@ -38,21 +37,21 @@ function ResourceDetail({ resource, id }: { resource: ResourceKey; id: string })
   const query = useQuery(detailQuery(resource, id))
 
   return (
-    <div className="grid gap-6">
+    <div className="grid gap-8">
       <Link
         to={`/${resource}`}
-        className="text-muted-foreground hover:text-foreground inline-flex w-fit items-center gap-1 text-sm"
+        className="readout hover:text-foreground inline-flex w-fit items-center gap-1.5 transition-colors"
       >
-        <ArrowLeft className="size-4" aria-hidden />
+        <ArrowLeft className="size-3.5" aria-hidden />
         Back to {config.label}
       </Link>
 
       <QueryBoundary
         query={query}
         skeleton={
-          <div className="grid gap-4">
-            <Skeleton className="h-10 w-1/2" />
-            <Skeleton className="h-40 w-full" />
+          <div className="grid gap-6">
+            <Skeleton className="h-12 w-2/3 rounded-none" />
+            <Skeleton className="h-48 w-full rounded-none" />
           </div>
         }
       >
@@ -60,29 +59,29 @@ function ResourceDetail({ resource, id }: { resource: ResourceKey; id: string })
           const record = entity as unknown as Record<string, unknown>
 
           return (
-            <article className="grid gap-6">
-              <header>
-                <p className="text-muted-foreground text-xs tracking-widest uppercase">
-                  {config.singular}
-                </p>
-                <h1 className="text-swapi text-3xl font-bold tracking-tight">
+            <article className="grid gap-10">
+              <header className="border-hairline grid gap-3 border-b pb-6">
+                {/* The catalog reference: class and record number. */}
+                <p className="readout">{`Record · ${config.singular} · ${id.padStart(3, '0')}`}</p>
+                <h1 className="record-title text-4xl leading-none sm:text-5xl">
                   {config.title(entity)}
                 </h1>
               </header>
 
               <FieldList entity={record} fields={config.detailFields} />
 
-              <Separator />
-
-              <div className="grid gap-5">
-                {config.relations.map((relation) => (
-                  <RelatedLinks
-                    key={relation}
-                    urls={relationUrls(record[relation])}
-                    label={formatLabel(relation)}
-                  />
-                ))}
-              </div>
+              <section className="grid gap-6">
+                <h2 className="readout text-foreground">Linked records</h2>
+                <div className="grid gap-5">
+                  {config.relations.map((relation) => (
+                    <RelatedLinks
+                      key={relation}
+                      urls={relationUrls(record[relation])}
+                      label={formatLabel(relation)}
+                    />
+                  ))}
+                </div>
+              </section>
             </article>
           )
         }}

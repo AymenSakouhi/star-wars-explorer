@@ -20,9 +20,9 @@ describe('ResourceListPage', () => {
     expect(screen.getByRole('heading', { name: 'Leia Organa' })).toBeInTheDocument()
   })
 
-  it('announces the result count in a live region', async () => {
+  it('announces the record count in a live region', async () => {
     renderList()
-    const count = await screen.findByText(/87 results/i)
+    const count = await screen.findByText(/87 records/i)
     expect(count).toHaveAttribute('aria-live', 'polite')
   })
 
@@ -47,8 +47,15 @@ describe('ResourceListPage', () => {
     await screen.findByRole('heading', { name: 'Luke Skywalker' })
 
     const card = screen.getByRole('link', { name: /Luke Skywalker/ })
-    expect(card).toHaveTextContent(/Birth year:/i)
+    expect(card).toHaveTextContent(/Birth year/i)
     expect(card).toHaveTextContent('19BBY')
+  })
+
+  it('shows each record’s catalog number', async () => {
+    renderList()
+    await screen.findByRole('heading', { name: 'Luke Skywalker' })
+
+    expect(screen.getByRole('link', { name: /Luke Skywalker/ })).toHaveTextContent('001')
   })
 
   it('debounces typing into the query and filters the results', async () => {
@@ -118,9 +125,9 @@ describe('ResourceListPage', () => {
     expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument()
   })
 
-  it('renders the 404 page for a resource SWAPI does not have', () => {
+  it('renders the not-found page for a resource SWAPI does not have', () => {
     renderList('/droids')
-    expect(screen.getByRole('heading', { level: 1, name: '404' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: /not found/i })).toBeInTheDocument()
   })
 
   it('works for every resource, not just people', async () => {
