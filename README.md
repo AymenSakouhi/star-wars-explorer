@@ -1,5 +1,7 @@
 # SWAPI Explorer
 
+[![CI](https://github.com/AymenSakouhi/star-wars-explorer/actions/workflows/ci.yml/badge.svg)](https://github.com/AymenSakouhi/star-wars-explorer/actions/workflows/ci.yml)
+
 A small React app for browsing the Star Wars API — all six resources, with search, pagination, and relations resolved into links, so you can follow a character to their homeworld and on to the films it appears in.
 
 Built as a take-home assignment for JAKALA.
