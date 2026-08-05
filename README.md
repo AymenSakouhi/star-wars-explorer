@@ -160,9 +160,6 @@ src/
   app/           providers, router, layout, theme
   pages/         home, 404
   test/          MSW handlers, fixtures, render helper
-docs/
-  specs/         the design agreed before implementation
-  plans/         the task-by-task implementation plan
 ```
 
-`docs/specs/` and `docs/plans/` are the design and plan written before any code, kept in the repo because they show the reasoning, not just the result.
+The dependency direction is one way: `pages` → `features` → `components` → `lib`, never the reverse. Nothing under `lib/swapi/` imports React except `queries.ts`, and that only for `queryOptions`, so the whole data layer is testable without rendering anything.

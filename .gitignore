@@ -39,11 +39,6 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Local agent/tooling state (not part of the deliverable)
-.claude/
-.claude-flow/
-.remember/
-.vercel/
 
-# Playwright MCP scratch output
-.playwright-mcp/
+# Vercel
+.vercel/
