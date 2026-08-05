@@ -6,8 +6,6 @@ A React app for browsing the Star Wars archives — all six SWAPI resources, wit
 
 **Live: [star-wars-explorer-kappa.vercel.app](https://star-wars-explorer-kappa.vercel.app)**
 
-Built as a take-home assignment for JAKALA.
-
 ![The archive index, showing the six sections with live record counts](docs/screenshots/home.png)
 
 ## Running it
