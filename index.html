@@ -10,21 +10,17 @@
     />
     <title>Star Wars Explorer</title>
     <script>
-      // Applies the stored theme before first paint, so the page never flashes
-      // the wrong one. Mirrors readInitialTheme() in src/hooks/use-theme.tsx.
+      // Applies the theme before first paint so the page never flashes the
+      // wrong one. Dark unless the visitor has explicitly chosen light.
+      // Mirrors readInitialTheme() in src/app/theme-provider.tsx.
       ;(function () {
         try {
-          var stored = localStorage.getItem('swapi-theme')
-          var theme =
-            stored === 'light' || stored === 'dark'
-              ? stored
-              : window.matchMedia('(prefers-color-scheme: light)').matches
-                ? 'light'
-                : 'dark'
-          if (theme === 'dark') document.documentElement.classList.add('dark')
+          if (localStorage.getItem('star-wars-explorer:theme') === 'light') return
         } catch (error) {
-          document.documentElement.classList.add('dark')
+          /* Storage unavailable (private mode, blocked cookies) — fall through
+             to the dark default rather than failing to render. */
         }
+        document.documentElement.classList.add('dark')
       })()
     </script>
   </head>

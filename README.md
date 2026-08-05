@@ -91,7 +91,7 @@ The home page shows a live record count per section. Those are the exact queries
 
 ## Testing
 
-141 tests. Vitest, Testing Library, and MSW; ~93% statement coverage.
+147 tests. Vitest, Testing Library, and MSW; ~93% statement coverage.
 
 MSW serves fixtures trimmed from **real** `swapi.py4e.com` responses, so the schemas are tested against the shape the API actually returns rather than an idealised one. Unhandled requests fail the run, so no test can silently reach the network and pass slowly in CI.
 
@@ -143,7 +143,7 @@ The obvious Star Wars treatment is black, yellow, and an opening crawl. Every su
 - **Three type roles.** Archivo for record titles, Geist for prose, JetBrains Mono for the readout layer. The mono carries the theme so nothing else has to.
 - **Blue-black surfaces**, not neutral grey, so the amber reads warm against them.
 
-Every foreground/background pairing clears WCAG AA in both themes. No custom illustration and no asset pipeline — SWAPI ships no images, and sourcing character art would mean third-party assets with unclear licensing.
+**Dark is the default**, and `prefers-color-scheme` is deliberately ignored so every visitor lands on the look the app was designed for. A light theme is one click away and the choice persists; a stored preference always wins over the default. Every foreground/background pairing clears WCAG AA in both themes. No custom illustration and no asset pipeline — SWAPI ships no images, and sourcing character art would mean third-party assets with unclear licensing.
 
 Accessibility was kept cheap and present: landmarks, a skip link, one `h1` per page, a labelled search input, an `aria-live` record count, `prefers-reduced-motion` respected, and cards that are real anchors so keyboard navigation and focus order come for free.
 

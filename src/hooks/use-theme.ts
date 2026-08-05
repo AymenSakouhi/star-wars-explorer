@@ -2,7 +2,7 @@ import { createContext, use } from 'react'
 
 export type Theme = 'dark' | 'light'
 
-export const THEME_STORAGE_KEY = 'swapi-theme'
+export const THEME_STORAGE_KEY = 'star-wars-explorer:theme'
 
 export type ThemeContextValue = { theme: Theme; toggle: () => void }
 
