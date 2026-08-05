@@ -4,6 +4,8 @@
 
 A React app for browsing the Star Wars archives — all six SWAPI resources, with search, pagination, and every relation resolved into a link, so you can follow a character to their homeworld and on to the films it appears in.
 
+**Live: [star-wars-explorer-kappa.vercel.app](https://star-wars-explorer-kappa.vercel.app)**
+
 Built as a take-home assignment for JAKALA.
 
 ![The archive index, showing the six sections with live record counts](docs/screenshots/home.png)
