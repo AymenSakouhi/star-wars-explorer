@@ -44,3 +44,6 @@ pnpm-debug.log*
 .claude-flow/
 .remember/
 .vercel/
+
+# Playwright MCP scratch output
+.playwright-mcp/
